@@ -6,10 +6,6 @@
 		<button class="button" @click="login">登录</button>
 		<button class="button" @click="register">注册</button>
 		<text class="other-login">-- 或用其他账号登录 --</text>
-		<view class="social-login">
-			<image src="path/to/wechat-icon.png" class="icon" @click="loginWithWeChat" />
-			<image src="path/to/qq-icon.png" class="icon" @click="loginWithQQ" />
-		</view>
 	</view>
 </template>
 
@@ -27,22 +23,18 @@ export default {
 			console.log('用户名:', this.username);
 			console.log('密码:', this.password);
 			// 这里可以添加 API 调用
+			uni.navigateTo({
+				url: '/pages/square/square' 
+			});
 		},
 		register() {
 			// 注册逻辑
 			console.log('跳转到注册页面');
 			uni.navigateTo({
-				url: '/pages/register/register' // 替换为注册页面的路径
+				url: '/pages/register/register' 
 			});
 		},
-		loginWithWeChat() {
-			// 微信登录逻辑
-			console.log('使用微信登录');
-		},
-		loginWithQQ() {
-			// QQ 登录逻辑
-			console.log('使用QQ登录');
-		}
+
 	}
 }
 </script>
@@ -53,7 +45,7 @@ export default {
 	text-align: center;
 }
 .title {
-	font-size: 24px;
+	font-size: 50px;
 	margin-bottom: 20px;
 }
 .input {

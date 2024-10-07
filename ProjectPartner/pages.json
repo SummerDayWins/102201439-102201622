@@ -5,6 +5,28 @@
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
+		},
+		{
+			"path" : "pages/register/register",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/square/square",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
+		},
+		{
+			"path" : "pages/profile/profile",
+			"name": "profile",
+			"style" : 
+			{
+				"navigationBarTitleText" : "个人简历"
+			}
 		}
 	],
 	"globalStyle": {
