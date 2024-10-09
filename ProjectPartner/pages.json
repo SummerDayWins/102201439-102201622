@@ -27,6 +27,14 @@
 			{
 				"navigationBarTitleText" : "个人简历"
 			}
+		},
+		{
+			"path" : "pages/addProject/addProject",
+			"name": "addProject",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
 	],
 	"globalStyle": {
