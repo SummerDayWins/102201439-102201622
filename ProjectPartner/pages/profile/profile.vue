@@ -3,18 +3,10 @@
     <div class="header">
       <div 
         class="avatar" 
-        @click="fileInput.click()" 
         :style="{ backgroundImage: 'url(' + avatarUrl + ')' }"
       >
         头像
-      </div> <!-- 点击头像选择文件 -->
-      <input 
-        type="file" 
-        ref="fileInput" 
-        @change="changeAvatar" 
-        style="display: none;" 
-        accept="image/*" 
-      /> <!-- 隐藏文件输入 -->
+      </div>
       <div class="user-info">
         <h2>{{ username }}</h2>
         <p>个性签名：<span v-if="!isEditing">{{ signature }}</span><input v-if="isEditing" v-model="signature" /></p>
@@ -29,8 +21,35 @@
     <div class="content">
       <div v-if="!showEducation">
         <h3>项目经历</h3>
-        <p>项目一</p>
-        <p>项目二</p>
+        <div v-if="joinedProjects.length === 0 && createdProjects.length === 0">没有项目经历</div>
+        <div v-else>
+          <div class="project-list">
+            <div class="project-card" v-for="project in joinedProjects" :key="project.id">
+              <div class="project-header">
+                <div class="avatar" :style="{ backgroundImage: 'url(' + project.avatarUrl + ')' }"></div>
+                <div class="project-info">
+                  <h4 class="project-name">{{ project.name }}</h4>
+                  <p class="project-description">介绍：{{ project.description }}</p>
+                  <div class="tags">
+                    <span class="tag" v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="project-card" v-for="project in createdProjects" :key="project.id">
+              <div class="project-header">
+                <div class="avatar" :style="{ backgroundImage: 'url(' + project.avatarUrl + ')' }"></div>
+                <div class="project-info">
+                  <h4 class="project-name">{{ project.name }}</h4>
+                  <p class="project-description">介绍：{{ project.description }}</p>
+                  <div class="tags">
+                    <span class="tag" v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <button class="edit-button" @click="toggleEdit">
@@ -50,29 +69,27 @@ export default {
       email: 'example@example.com',
       qq: '123456789',
       showEducation: false, // 默认不显示教育经历
-      avatarUrl: 'default-avatar.png', // 添加头像 URL
+      avatarUrl: '', // 直接使用随机头像 URL
+      joinedProjects: [], // 新增属性以存储项目经历
+      createdProjects: [], // 新增属性以存储创建的项目
     };
   },
   created() {
     this.loadData(); // 组件创建时加载数据
+    this.loadJoinedProjects(); // 加载项目经历
+    this.loadCreatedProjects(); // 加载创建的项目
+    this.generateRandomAvatar(); // 生成随机头像
   },
   methods: {
+    generateRandomAvatar() {
+      // 生成随机头像 URL
+      this.avatarUrl = `https://api.adorable.io/avatars/80/${Math.random()}.png`;
+    },
     toggleEdit() {
       if (this.isEditing) {
         this.saveData(); // 保存数据
       }
       this.isEditing = !this.isEditing; // 切换编辑状态
-    },
-    changeAvatar(event) {
-      const file = event.target.files[0]; // 获取选择的文件
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.avatarUrl = e.target.result; // 更新头像 URL
-          localStorage.setItem('avatarUrl', this.avatarUrl); // 保存头像 URL
-        };
-        reader.readAsDataURL(file); // 将文件读取为 Data URL
-      }
     },
     saveData() {
       // 保存数据到 localStorage
@@ -89,7 +106,17 @@ export default {
       this.phone = localStorage.getItem('phone') || '1234567890';
       this.email = localStorage.getItem('email') || 'example@example.com';
       this.qq = localStorage.getItem('qq') || '123456789';
-      this.avatarUrl = localStorage.getItem('avatarUrl') || 'default-avatar.png';
+      this.avatarUrl = localStorage.getItem('avatarUrl') || `https://api.adorable.io/avatars/80/${Math.random()}.png`; // 默认随机头像
+    },
+    loadJoinedProjects() {
+      // 从 localStorage 加载项目经历
+      const projects = JSON.parse(localStorage.getItem('joinedProjects')) || [];
+      this.joinedProjects = projects;
+    },
+    loadCreatedProjects() {
+      // 从 localStorage 加载创建的项目
+      const projects = JSON.parse(localStorage.getItem('createdProjects')) || [];
+      this.createdProjects = projects;
     },
   },
 };
@@ -119,7 +146,6 @@ export default {
   border-radius: 50%;
   background-color: #ccc;
   margin-right: 10px; /* 减小右边距 */
-  cursor: pointer; /* 添加光标样式 */
   background-size: cover; /* 使头像适应容器 */
 }
 
@@ -148,6 +174,48 @@ export default {
 .content {
   margin-bottom: 20px;
   text-align: left; /* 左对齐 */
+}
+
+.project-list {
+  margin-bottom: 20px;
+}
+
+.project-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+}
+
+.project-info {
+  flex: 1;
+}
+
+.project-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.project-description {
+  color: #666;
+}
+
+.tags {
+  margin-top: 5px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
 .edit-button {

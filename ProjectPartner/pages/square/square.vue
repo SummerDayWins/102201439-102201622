@@ -5,14 +5,11 @@
       <div class="circle" @click="profile()">
         <span>个人简历</span>
       </div>
-      <div class="circle" @click="navigateTo('addProject')">
+      <div class="circle" @click="addProject()">
         <span>加入项目</span>
       </div>
-      <div class="circle" @click="navigateTo('projectPlan')">
-        <span>项目企划</span>
-      </div>
-      <div class="circle" @click="navigateTo('callList')">
-        <span>会话列表</span>
+      <div class="circle" @click="newProject()">
+        <span>新建项目</span>
       </div>
     </div>
   </div>
@@ -28,6 +25,16 @@ export default {
 	profile() {
 		uni.navigateTo({
 			url: '/pages/profile/profile' 
+		});
+	},
+	addProject() {
+		uni.navigateTo({
+			url: '/pages/addProject/addProject' 
+		});
+	},
+	newProject() {
+		uni.navigateTo({
+			url: '/pages/newProject/newProject' 
 		});
 	},
   }

@@ -1,3 +1,4 @@
+<!-- d:\Users\Documents\HBuilderProjects\ProjectPartner\pages\addProject\addProject.vue -->
 <template>
   <view class="container">
     <view class="search-bar">
@@ -10,7 +11,11 @@
     </view>
     <text class="title">加入项目</text>
     <view class="project-list">
-      <view class="project-card" v-for="project in filteredProjects" :key="project.id">
+      <view 
+        class="project-card" 
+        v-for="project in filteredProjects" 
+        :key="project.id" 
+      >
         <view class="project-header">
           <view class="avatar" :style="{ backgroundImage: 'url(' + project.avatarUrl + ')' }"></view>
           <view class="project-info">
@@ -24,7 +29,7 @@
         <button 
           class="apply-button" 
           :disabled="project.joined" 
-          @click="applyForProject(project.id)" 
+          @click.stop="applyForProject(project.id)"  <!-- 阻止事件冒泡 -->
           v-if="!project.joined"
         >
           申请加入
@@ -35,6 +40,13 @@
         >
           已加入
         </button>
+        <view class="members">
+          <text class="members-title">成员</text>
+          <view class="member" v-for="member in project.members" :key="member.id">
+            <view class="member-avatar" :style="{ backgroundImage: 'url(' + member.avatarUrl + ')' }"></view>
+            <text class="member-name">{{ member.name }}</text>
+          </view>
+        </view>
       </view>
     </view>
     <button class="my-projects-button" @click="goToMyProjects">我加入的项目</button>
@@ -54,6 +66,11 @@ export default {
           avatarUrl: 'https://picsum.photos/80/80?random=1',
           tags: ['人工智能', '助手'],
           joined: false,
+          members: [
+            { id: 1, name: '发起人', avatarUrl: 'https://picsum.photos/40/40?random=1' },
+            { id: 2, name: '成员一', avatarUrl: 'https://picsum.photos/40/40?random=2' },
+            { id: 3, name: '成员二', avatarUrl: 'https://picsum.photos/40/40?random=3' },
+          ],
         },
         {
           id: 2,
@@ -62,6 +79,10 @@ export default {
           avatarUrl: 'https://picsum.photos/80/80?random=2',
           tags: ['区块链', '去中心化'],
           joined: false,
+          members: [
+            { id: 1, name: '发起人', avatarUrl: 'https://picsum.photos/40/40?random=4' },
+            { id: 2, name: '成员一', avatarUrl: 'https://picsum.photos/40/40?random=5' },
+          ],
         },
         {
           id: 3,
@@ -70,23 +91,13 @@ export default {
           avatarUrl: 'https://picsum.photos/80/80?random=3',
           tags: ['健康', '数据分析'],
           joined: false,
+          members: [
+            { id: 1, name: '发起人', avatarUrl: 'https://picsum.photos/40/40?random=6' },
+            { id: 2, name: '成员一', avatarUrl: 'https://picsum.photos/40/40?random=7' },
+            { id: 3, name: '成员二', avatarUrl: 'https://picsum.photos/40/40?random=8' },
+          ],
         },
-        {
-          id: 4,
-          name: '在线教育平台',
-          description: '这是一个关于教育的项目，旨在提供在线学习资源，帮助学生提高学习效率。',
-          avatarUrl: 'https://picsum.photos/80/80?random=4',
-          tags: ['教育', '在线学习'],
-          joined: false,
-        },
-        {
-          id: 5,
-          name: '可持续发展倡议',
-          description: '本项目致力于环境保护，推动可持续发展，提升公众环保意识。',
-          avatarUrl: 'https://picsum.photos/80/80?random=5',
-          tags: ['环境', '可持续发展'],
-          joined: false,
-        },
+        // 其他项目...
       ],
     };
   },
@@ -242,5 +253,33 @@ export default {
   border: none;
   border-radius: 5px;
   text-align: center;
+}
+
+.members {
+  margin-top: 10px;
+}
+
+.members-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.member {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.member-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+  background-size: cover;
+}
+
+.member-name {
+  font-size: 14px;
 }
 </style>
